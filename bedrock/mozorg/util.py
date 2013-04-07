@@ -11,7 +11,6 @@ from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 
 import commonware.log
-from funfactory.urlresolvers import reverse
 from lib import l10n_utils
 
 try:
