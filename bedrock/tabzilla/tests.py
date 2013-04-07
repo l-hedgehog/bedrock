@@ -64,7 +64,7 @@ class TabzillaRedirectTests(TestCase):
         with self.activate('en-US'):
             response = self.client.get(tabzilla_css_url)
         eq_(response.status_code, 301)
-        eq_(response['Location'], 'http://example.com/css/tabzilla/tabzilla-min.css')
+        eq_(response['Location'], 'http://example.com/css/tabzilla-min.css')
 
         with patch.object(settings, 'TEMPLATE_DEBUG', True):
             with self.activate('en-US'):
