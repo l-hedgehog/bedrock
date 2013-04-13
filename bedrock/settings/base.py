@@ -79,6 +79,9 @@ MINIFY_BUNDLES = {
         'about': (
             'css/mozorg/about.less',
         ),
+        'about-base': (
+            'css/mozorg/about-base.less',
+        ),
         'mobile_overview': (
             'css/mozorg/mobile.less',
         ),
@@ -227,6 +230,10 @@ MINIFY_BUNDLES = {
         'powered-by': (
             'css/mozorg/powered-by.less',
         ),
+        'plugincheck': (
+            'css/plugincheck/plugincheck.less',
+            'css/plugincheck/qtip.css',
+        ),
         'privacy': (
             'css/privacy/privacy.less',
         ),
@@ -284,6 +291,10 @@ MINIFY_BUNDLES = {
             'js/base/site.js',  # this is automatically included on every page
         ),
         'collusion': (
+            'js/collusion/collusion.js',
+            'js/libs/jquery.validate.js',
+        ),
+        'collusion_demo': (
             'js/collusion/d3.layout.js',
             'js/collusion/d3.geom.js',
             'js/collusion/collusion-addon.js',
@@ -410,6 +421,12 @@ MINIFY_BUNDLES = {
             'js/libs/jquery.validate.js',
             'js/mozorg/partnerships.js',
             'js/base/mozilla-input-placeholder.js',
+        ),
+        'plugincheck': (
+            'js/plugincheck/plugincheck.min.js',
+            'js/plugincheck/lib/mustache.js',
+            'js/plugincheck/tmpl/plugincheck.ui.tmpl.js',
+            'js/plugincheck/check-plugins.js',
         ),
         'privacy': (
             'js/base/mozilla-pager.js',
@@ -593,8 +610,9 @@ LOCALES_WITH_TRANSITION = ['en-US', 'af', 'ar', 'ast', 'be', 'bg',
                            'tr', 'uk', 'vi', 'zh-CN', 'zh-TW']
 
 # Locales showing the 15th Anniversary slideshow on /contribute
-LOCALES_WITH_MOZ15 = ['en-US', 'en-GB', 'de', 'es-ES', 'fr',
-                      'id', 'nl', 'pt-BR', 'zh-TW', 'zh-CN',]
+LOCALES_WITH_MOZ15 = ['de', 'el', 'en-GB', 'en-US', 'es-AR', 'es-CL', 'es-ES',
+                      'es-MX', 'fr', 'id', 'nl', 'pt-BR', 'sq', 'zh-CN',
+                      'zh-TW']
 
 # reCAPTCHA keys
 RECAPTCHA_PUBLIC_KEY = ''
@@ -619,6 +637,7 @@ GA_ACCOUNT_CODE = ''
 FACEBOOK_LOCALES = ['en-US', 'es-ES', 'pt-BR', 'id', 'de']
 FACEBOOK_PAGE_NAMESPACE = 'DUMMY_PAGE_NAMESPACE'
 FACEBOOK_APP_ID = 'DUMMY_APP_ID'
+
 
 # FACEBOOK_TAB_URL is lazily evaluated because it depends on the namespace
 # and app ID settings in local settings.

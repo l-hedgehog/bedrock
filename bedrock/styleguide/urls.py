@@ -2,10 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from django.conf.urls.defaults import *
+from django.conf import settings
+
 from bedrock.mozorg.hierarchy import PageNode, PageRoot
 
-hierarchy = PageRoot('Home', children=(
+
+all_children = [
     PageNode('Home', template='styleguide/home.html'),
     PageNode('Identity', path='identity', children=(
         PageNode('Mozilla', path='mozilla', children=(
@@ -70,9 +72,16 @@ hierarchy = PageRoot('Home', children=(
     )),
     PageNode('Products', path='products', children=(
         PageNode('Firefox OS', path='firefoxos', children=(
-            PageNode('Icons', path='icons', template='styleguide/products/firefox-os-icons.html'),
+            PageNode('App Icons', path='icons', template='styleguide/products/firefox-os-icons.html'),
+            PageNode('Action Icons', path='action-icons', template='styleguide/products/firefox-os-action-icons.html'),
         )),
     )),
-))
+]
 
-urlpatterns = hierarchy.as_urlpatterns()
+if settings.DEV:
+    all_children.append(
+        PageNode('All Buttons', path='all-download-buttons',
+                 template='styleguide/websites/sandstone-all-download-buttons.html'),
+    )
+
+urlpatterns = PageRoot('Home', children=tuple(all_children)).as_urlpatterns()

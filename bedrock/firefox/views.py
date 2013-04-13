@@ -6,23 +6,24 @@ import json
 import re
 
 from django.conf import settings
-from django.http import (HttpResponse, HttpResponsePermanentRedirect,
+from django.http import (HttpResponsePermanentRedirect,
                          HttpResponseRedirect)
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.core.context_processors import csrf
 from django.views.decorators.vary import vary_on_headers
 
 import basket
+from lib import l10n_utils
 import requests
 from jingo_minify.helpers import BUILD_ID_JS, BUNDLE_HASHES
-from product_details import product_details
-from product_details.version_compare import Version
 from funfactory.urlresolvers import reverse
 
-from lib import l10n_utils
+
 from bedrock.firefox import version_re
-from bedrock.firefox.forms import SMSSendForm, WebToLeadForm
+from bedrock.firefox.forms import SMSSendForm
+from bedrock.mozorg.forms import WebToLeadForm
 from bedrock.firefox.platforms import load_devices
+from bedrock.firefox.utils import is_current_or_newer
 from bedrock.firefox.firefox_details import firefox_details
 from lib.l10n_utils.dotlang import _
 
@@ -58,25 +59,6 @@ def get_js_bundle_files(bundle):
 JS_COMMON = get_js_bundle_files('partners_common')
 JS_MOBILE = get_js_bundle_files('partners_mobile')
 JS_DESKTOP = get_js_bundle_files('partners_desktop')
-
-
-@csrf_exempt
-@require_POST
-def contact_bizdev(request):
-    form = WebToLeadForm(request.POST)
-    if form.is_valid():
-        data = form.cleaned_data.copy()
-        interest = data.pop('interest')
-        data['00NU0000002pDJr'] = interest
-        data['oid'] = '00DU0000000IrgO'
-        data['retURL'] = ('http://www.mozilla.org/en-US/about/'
-                          'partnerships?success=1')
-        r = requests.post('https://www.salesforce.com/servlet/'
-                          'servlet.WebToLead?encoding=UTF-8', data)
-        msg = requests.status_codes._codes.get(r.status_code, ['error'])[0]
-        return HttpResponse(msg, status=r.status_code)
-
-    return HttpResponse('Form invalid', status=400)
 
 
 @csrf_exempt
@@ -164,24 +146,6 @@ def latest_fx_redirect(request, fake_version, template_name):
                              {'locales_with_video': locales_with_video})
 
 
-def is_current_or_newer(user_version):
-    """
-    Return true if the version (X.Y only) is for the latest Firefox or newer.
-    """
-    latest = Version(product_details.firefox_versions['LATEST_FIREFOX_VERSION'])
-    user = Version(user_version)
-
-    # check for ESR
-    if user.major in firefox_details.esr_major_versions:
-        return True
-
-    # similar to the way comparison is done in the Version class,
-    # but only using the major and minor versions.
-    latest_int = int('%d%02d' % (latest.major, latest.minor1))
-    user_int = int('%d%02d' % (user.major or 0, user.minor1 or 0))
-    return user_int >= latest_int
-
-
 def all_downloads(request):
     version = firefox_details.latest_version('release')
     query = request.GET.get('q')
@@ -192,13 +156,21 @@ def all_downloads(request):
     })
 
 
+@csrf_protect
 def firefox_partners(request):
     # If the current locale isn't in our list, return the en-US value
     locale_os_url = LOCALE_OS_URLS.get(request.locale, LOCALE_OS_URLS['en-US'])
 
-    return l10n_utils.render(request, 'firefox/partners/index.html', {
+    form = WebToLeadForm()
+
+    template_vars = {
         'locale_os_url': locale_os_url,
         'js_common': JS_COMMON,
         'js_mobile': JS_MOBILE,
         'js_desktop': JS_DESKTOP,
-    })
+        'form': form,
+    }
+
+    template_vars.update(csrf(request))
+
+    return l10n_utils.render(request, 'firefox/partners/index.html', template_vars)
