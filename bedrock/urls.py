@@ -57,4 +57,3 @@ if settings.DEBUG:
         (r'^500/$', handler500),
     )
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-

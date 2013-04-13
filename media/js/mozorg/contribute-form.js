@@ -7,4 +7,3 @@ $(document).ready(function() {
         $('.form-details').slideDown();
     });
 });
-
