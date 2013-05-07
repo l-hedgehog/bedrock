@@ -614,7 +614,7 @@ LOCALES_WITH_TRANSITION = ['en-US', 'af', 'ar', 'ast', 'be', 'bg',
 
 # Locales showing the 15th Anniversary slideshow on /contribute
 LOCALES_WITH_MOZ15 = ['de', 'el', 'en-GB', 'en-US', 'es-AR', 'es-CL', 'es-ES',
-                      'es-MX', 'fr', 'id', 'nl', 'pt-BR', 'sq', 'zh-CN',
+                      'es-MX', 'fr', 'id', 'nl', 'pt-BR', 'ru', 'sq', 'zh-CN',
                       'zh-TW']
 
 # reCAPTCHA keys
@@ -646,5 +646,5 @@ FACEBOOK_APP_ID = 'DUMMY_APP_ID'
 # and app ID settings in local settings.
 def facebook_tab_url_lazy():
     from django.conf import settings
-    return '//www.facebook.com/{}/app_{}'.format(settings.FACEBOOK_PAGE_NAMESPACE, settings.FACEBOOK_APP_ID)
+    return '//www.facebook.com/{page}/app_{id}'.format(page=settings.FACEBOOK_PAGE_NAMESPACE, id=settings.FACEBOOK_APP_ID)
 FACEBOOK_TAB_URL = lazy(facebook_tab_url_lazy, str)()

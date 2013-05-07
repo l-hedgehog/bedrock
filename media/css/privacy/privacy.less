@@ -48,10 +48,7 @@ nav.menu-bar {
 }
 #contact_privacy {
   width: 100%;
-  legend {
-    margin-bottom: 8px;
-    font-size: 18px;
-  }
+  .clearfix;
   label {
     font-family: 'Open Sans Light', sans-serif;
   }
@@ -235,7 +232,7 @@ table.data-table tbody tr td:first-child {
 .firefoxos {
     h2 {
         margin: 10px 5px;
-        width: 270px;
+        width: 285px;
         font-size: 1.5rem;
     }
     h3 {
@@ -244,16 +241,16 @@ table.data-table tbody tr td:first-child {
     }
 }
 .firefoxos-header {
-    background: transparent url("/media/img/home/firefox_small.png") 0 10px no-repeat;
-    margin: 20px 0 0 20px;
+    background: transparent url("/media/img/home/firefox_small.png") 0 3px no-repeat;
+    margin: 20px 0 0 10px;
     padding-left: 85px;
-    width: 150px;
+    width: 185px;
     font-size: 42px;
 }
 .highlight {
     background-color: #f9fafb;
     color: #333;
-    padding: 1rem 1.5rem .1rem 1.5rem;
+    padding: 1rem;
     box-shadow: 1px 1px 2px #999;
     line-height: 1.5rem;
 }
@@ -262,12 +259,15 @@ table.data-table tbody tr td:first-child {
 }
 [data-icon]:before {
     font-family: "icons";
-    content: '\2302';
+    content: '\e75d \e75d';
     speak: none;
 }
 .home {
     display: inline-block;
     margin-right: 10px;
+}
+.home:hover {
+    text-decoration: none;
 }
 .visually_hidden {
     position: absolute;
@@ -300,23 +300,25 @@ table.data-table tbody tr td:first-child {
 }
 .thingstoknow {
     h2 {
-        margin: 10px auto;
+        margin: 15px auto;
         width: 250px;
         font-size: 1.5rem;
     }
     ul {
         display: none;
-        margin: 0;
-        padding: 0;
+        margin: 20px 0 0 0;
+        font-family: 'Open Sans Light';
+        line-height: 1.4rem;
     }
     li {
-        margin-left: 10px;
+        margin: 10px 0 0 10px;
     }
     .intro {
-        margin: 0 auto 15px auto;
-        padding-bottom: 15px;
-        border-radius: 6px;
-        width: 200px;
+        margin-bottom: 15px;
+        p {
+          margin: 0;
+          font-size: 1rem;
+        }
     }
 }
 .policy,
