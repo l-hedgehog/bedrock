@@ -17,6 +17,14 @@ latest_re = r'^firefox(?:/(%s))?/%s/$'
 firstrun_re = latest_re % (version_re, 'firstrun')
 whatsnew_re = latest_re % (version_re, 'whatsnew')
 
+# firstrun testing
+# allow any (or no) string for version number
+# currently want to restrict to 21.0 only, but
+# left here for possible future use
+# remove when firstrun experiment is over
+#latest_new_re = r'^firefox(?:/(%s))?/firstrun/(?P<view>[a|b])(?P<version>[1-6])/$'
+#firstrun_new_re = latest_new_re % version_re
+
 
 urlpatterns = patterns('',
     url(r'^firefox/all/$', views.all_downloads, name='firefox.all'),
@@ -42,6 +50,7 @@ urlpatterns = patterns('',
     page('firefox/organizations/faq', 'firefox/organizations/faq.html'),
     page('firefox/organizations', 'firefox/organizations/organizations.html'),
     page('firefox/performance', 'firefox/performance.html'),
+    page('firefox/nightly/firstrun', 'firefox/nightly_firstrun.html'),
     page('firefox/security', 'firefox/security.html'),
     url(r'^firefox/installer-help/$', views.installer_help,
         name='firefox.installer-help'),
@@ -63,6 +72,8 @@ urlpatterns = patterns('',
         kwargs={'template_name': 'firefox/firstrun.html'}),
     url(whatsnew_re, views.latest_fx_redirect, name='firefox.whatsnew',
         kwargs={'template_name': 'firefox/whatsnew.html'}),
+    # firstrun tests. remove when experiment is over
+    url('^firefox/21.0/firstrun/(?P<view>[a|b])(?P<version>[1-6])/$', views.firstrun_new, name='firefox.firstrun.new'),
 
     url(r'^firefox/partners/$', views.firefox_partners,
         name='firefox.partners.index'),

@@ -13,7 +13,7 @@ DOWNLOADTAB.classes.App = (function (singleton) {
         this.appId = this._initData.appId;
         this.pageNamespace = this._initData.pageNamespace;
         this.tabRedirectUrl = this.absoluteUrl(this._initData.tabRedirectPath);
-        this.shareImageUrl = this.absoluteUrl(this._initData.shareImagePath);
+        this.shareImageUrl = this.mediaUrl(this._initData.shareImagePath);
         this._initData = undefined;
     }
 
@@ -23,10 +23,9 @@ DOWNLOADTAB.classes.App = (function (singleton) {
     App.prototype.domInit = function() {
         var self = this;
         var path_parts = self.window.location.pathname.split('/');
-        var referrer = path_parts[path_parts.length - 2];
 
         self.locale = path_parts[1];
-        self.virtualUrl = '/' + self.locale + '/products/download.html?referrer=' + referrer;
+        self.virtualUrl = '/' + self.locale + '/products/download.html?referrer=downloadtab';
 
         self.setupDownloadLinks();
 
@@ -102,11 +101,16 @@ DOWNLOADTAB.classes.App = (function (singleton) {
                 self.theater.showScene(2);
             }
 
-            // Delay download so window.location doesn't block rendering
+            if (self.window._gaq) {
+                self.window._gaq.push(['_trackPageview', self.virtualUrl]);
+            }
+
+            // Delay download so window.location redirect doesn't interrupt
+            // rendering and to give Google Analytics time to track
             window.setTimeout(function() {
                 downloadUrl = $(event.currentTarget).attr('href');
-                self.trackRedirect(downloadUrl, this.virtualUrl);
-            }, 500);
+                self.redirect(downloadUrl);
+            }, 600);
         });
     };
 
@@ -133,18 +137,25 @@ DOWNLOADTAB.classes.App = (function (singleton) {
         return self.getBaseUrl({ protocol: true }) + relativeUrl;
     };
 
-    App.prototype.trackRedirect = function(url, virtualUrl) {
+    App.prototype.mediaUrl = function(path) {
         var self = this;
-        virtualUrl = virtualUrl || url;
+        var fullUrlPrefixes = ['//', 'http://', 'https://'];
+        var length = fullUrlPrefixes.length;
+        var i;
+        var prefix;
 
-        if (!self.window._gat) {
-            self.redirect(url);
+        for (i = 0; i < length; i += 1) {
+            prefix = fullUrlPrefixes[i];
+            if (path.indexOf(prefix) === 0) {
+                if (prefix === '//') {
+                    path = self.window.location.protocol + path;
+                }
+
+                return path;
+            }
         }
 
-        self.window._gaq.push(['_trackPageview', virtualUrl]);
-        self.window._gaq.push(function() {
-            self.redirect(url);
-        });
+        return self.absoluteUrl(path);
     };
 
     App.prototype.redirect = function(url, options) {

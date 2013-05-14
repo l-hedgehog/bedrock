@@ -111,6 +111,9 @@ MINIFY_BUNDLES = {
         'contribute-page': (
             'css/mozorg/contribute-page.less',
         ),
+        'contribute-university-ambassadors': (
+            'css/mozorg/contribute-ambassadors.less',
+        ),
         'dnt': (
             'css/base/mozilla-expanders.less',
             'css/firefox/dnt.less',
@@ -159,6 +162,18 @@ MINIFY_BUNDLES = {
         'firefox_firstrun': (
             'css/sandstone/video.less',
             'css/firefox/firstrun.less',
+        ),
+        'nightly_firstrun': (
+            'css/sandstone/video.less',
+            'css/firefox/nightly_firstrun.less',
+        ),
+        'firefox_firstrun_new_a': (
+            'css/sandstone/video.less',
+            'css/firefox/firstrun/a.less',
+        ),
+        'firefox_firstrun_new_b': (
+            'css/sandstone/video.less',
+            'css/firefox/firstrun/b.less',
         ),
         'firefox_fx': (
             'css/firefox/fx.less',
@@ -325,6 +340,10 @@ MINIFY_BUNDLES = {
             'js/mozorg/contribute-form.js',
             'js/base/mozilla-input-placeholder.js',
         ),
+        'contribute-university-ambassadors': (
+            'js/mozorg/contribute-university-ambassadors.js',
+            'js/base/mozilla-input-placeholder.js',
+        ),
         'expanders': (
             'js/base/mozilla-expanders.js',
         ),
@@ -361,6 +380,20 @@ MINIFY_BUNDLES = {
         'firefox_features': (
             'js/base/mozilla-video-tools.js',
             'js/firefox/features.js',
+        ),
+        'firefox_firstrun': (
+            'js/firefox/firstrun/firstrun.js',
+        ),
+        'firefox_firstrun_new_a': (
+            'js/libs/jquery.waypoints.min.js',
+            'js/libs/jquery.waypoints-sticky.min.js',
+            'js/base/mozilla-modal.js',
+            'js/firefox/firstrun/common.js',
+            'js/firefox/firstrun/a.js',
+        ),
+        'firefox_firstrun_new_b': (
+            'js/base/mozilla-modal.js',
+            'js/firefox/firstrun/common.js',
         ),
         'firefox_fx': (
             'js/base/mozilla-pager.js',
