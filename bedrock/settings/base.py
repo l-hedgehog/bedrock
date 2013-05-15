@@ -8,7 +8,7 @@ import os
 
 from django.utils.functional import lazy
 
-from funfactory.settings_base import *
+from funfactory.settings_base import *  # noqa
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -554,7 +554,9 @@ LESS_BIN = 'lessc'
 MIDDLEWARE_CLASSES = (
     'bedrock.mozorg.middleware.MozorgRequestTimingMiddleware',
     'django_statsd.middleware.GraphiteMiddleware',
+    'bedrock.tabzilla.middleware.TabzillaLocaleURLMiddleware',
 ) + get_middleware(exclude=(
+    'funfactory.middleware.LocaleURLMiddleware',
     'multidb.middleware.PinningRouterMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -681,3 +683,7 @@ def facebook_tab_url_lazy():
     from django.conf import settings
     return '//www.facebook.com/{page}/app_{id}'.format(page=settings.FACEBOOK_PAGE_NAMESPACE, id=settings.FACEBOOK_APP_ID)
 FACEBOOK_TAB_URL = lazy(facebook_tab_url_lazy, str)()
+
+# Prefix for media. No trailing slash.
+# e.g. '//mozorg.cdn.mozilla.net'
+CDN_BASE_URL = ''
