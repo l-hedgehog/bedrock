@@ -4,11 +4,25 @@
 
 # Django settings file for bedrock.
 
-import os
-
 from django.utils.functional import lazy
 
 from funfactory.settings_base import *  # noqa
+
+# No database yet. Override in local.py.
+# Need at least this for Django to run.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy',
+    },
+}
+
+# Override in local.py for memcached.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'translations'
+    }
+}
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -71,6 +85,8 @@ def JINJA_CONFIG():
         'auto_reload': True,
     }
 
+JINGO_MINIFY_USE_STATIC = False
+CACHEBUST_IMGS = True
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
@@ -398,6 +414,7 @@ MINIFY_BUNDLES = {
         'firefox_fx': (
             'js/base/mozilla-pager.js',
             'js/base/mozilla-video-tools.js',
+            'js/firefox/fx.js',
         ),
         'firefox_happy': (
             'js/libs/jquery-1.4.4.min.js',
@@ -419,6 +436,9 @@ MINIFY_BUNDLES = {
         ),
         'firefox_tech': (
             'js/firefox/technology/tech.js',
+        ),
+        'firefox_update': (
+            'js/firefox/update.js',
         ),
         'firefox_sms': (
             'js/firefox/sms.js',
@@ -584,7 +604,7 @@ INSTALLED_APPS = get_apps(exclude=(
 
     # Django contrib apps
     'django_sha2',  # Load after auth to monkey-patch it.
-    
+
     # Local apps
     '%s.base' % PROJECT_MODULE,
     '%s.collusion' % PROJECT_MODULE,
@@ -613,6 +633,7 @@ LOCALE_PATHS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = get_template_context_processors(append=(
     'bedrock.mozorg.context_processors.current_year',
+    'bedrock.firefox.context_processors.latest_firefox_versions',
 ))
 
 ## Auth
